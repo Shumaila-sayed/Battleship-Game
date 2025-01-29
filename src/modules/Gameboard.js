@@ -1,4 +1,5 @@
 export default class Gameboard {
+    #shipArray = []
 	constructor() {
 		this.board = [];
 	}
@@ -15,50 +16,60 @@ export default class Gameboard {
 		}
 	}
 
-    placeShip(ship, start, horizontal = true) {
-		const x = start[0];
-		const y = start[1];
+	placeShip(x, y, ship, isHorizontal) {
+		if (!this.#checkLegalPos(x, y, ship, isHorizontal))
+			throw new Error('invalid coordinates');
 
-		if (horizontal) {
-            for (let i = 0; i < ship.length; i++) {
-				this.board[x][y + i] = ship;
-			}
-		} else {
-			for (let i = 0; i < ship.length; i++) {
-				this.board[x + i][y] = ship;
-			}
+		this.#shipArray.push(ship);
+
+		const incrementX = isHorizontal ? 0 : 1;
+		const incrementY = isHorizontal ? 1 : 0;
+
+		for (let i = 0; i < ship.length; i++) {
+			const newX = x + i * incrementX;
+			const newY = y + i * incrementY;
+
+			this.board[newX][newY] = ship;
 		}
-    }
-    
-    receiveAttack(pos) {
-        const x = pos[0];
-        const y = pos[1];
-        if (this.board[x][y] !== 'O') {
-            this.board[x][y].hit();
-        } else {
-            this.missedAttacks([x, y])
-        }
-    }
+	}
 
-    missedAttacks(arr) {
-        let missedCoordinates = []
-        missedCoordinates.push(arr);
-        return missedCoordinates;
-    }
+	#checkLegalPos(x, y, ship, isHorizontal) {
+		const incrementX = isHorizontal ? 0 : 1;
+		const incrementY = isHorizontal ? 1 : 0;
 
-    isAllShipsSunk() {
-        let shipsSunk = false;
-        let ships = []
-        for (let i = 0; i < 10; i++) {
-			for (let j = 0; j < 10; j++) {
-                if (this.board[i][j] !== 'O') {
-                    ships.push(this.board[i][j]);
-                };
-			}
-        }
-        shipsSunk = ships.every(ship => {
-           return ship.isSunk() == true;
-         })
-        return shipsSunk
-    }
+		for (let i = 0; i < ship.length; i++) {
+			const newX = x + i * incrementX;
+			const newY = y + i * incrementY;
+
+			if (newX < 0 || newX >= 10 || newY < 0 || newY >= 10)
+				return false;
+
+			if (this.board[newX][newY] !== 'O') return false;
+		}
+		return true;
+	}
+
+	receiveAttack(pos) {
+		const x = pos[0];
+		const y = pos[1];
+		if (this.board[x][y] !== 'O') {
+			this.board[x][y].hit();
+		} else {
+			this.missedAttacks([x, y]);
+		}
+	}
+
+	missedAttacks(arr) {
+		let missedCoordinates = [];
+		missedCoordinates.push(arr);
+		return missedCoordinates;
+	}
+
+	isAllShipsSunk() {
+		let shipsSunk = false;
+		shipsSunk = this.#shipArray.every((ship) => {
+			return ship.isSunk() == true;
+		});
+		return shipsSunk;
+	}
 }

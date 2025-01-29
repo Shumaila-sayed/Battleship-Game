@@ -18,13 +18,13 @@ it('Gameboard is not empty', () => {
 
 it('ship on board', () => {
 	const ship = new Ship('Submarine', 3);
-	game.placeShip(ship, [3, 2]);
+	game.placeShip(3, 2, ship, true);
 	expect(game.board[3][2]).toBe(ship);
 });
 
 it('attack hit the ship', () => {
 	const ship = new Ship('Submarine', 3);
-	game.placeShip(ship, [3, 2]);
+	game.placeShip(3, 2, ship, true);
 	game.receiveAttack([3, 2]);
 	game.receiveAttack([3, 3]);
 	expect(ship.hitNum).toBe(2);
@@ -32,9 +32,9 @@ it('attack hit the ship', () => {
 
 it('report if all ship sunk', () => {
 	const ship = new Ship('Submarine', 3);
-	game.placeShip(ship, [3, 2]);
+	game.placeShip(3, 2, ship, true);
 	const ship2 = new Ship('Patrol Boat', 2);
-	game.placeShip(ship2, [7, 5]);
+	game.placeShip(7, 5, ship2, true);
 	game.receiveAttack([3, 2]);
 	game.receiveAttack([3, 3]);
 	game.receiveAttack([3, 4]);
