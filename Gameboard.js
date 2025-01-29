@@ -33,12 +33,32 @@ export default class Gameboard {
     receiveAttack(pos) {
         const x = pos[0];
         const y = pos[1];
-        let missedShotCoordinates = [];
         if (this.board[x][y] !== 'O') {
             this.board[x][y].hit();
         } else {
-            missedShotCoordinates.push([x, y]);
+            this.missedAttacks([x, y])
         }
-        return missedShotCoordinates
+    }
+
+    missedAttacks(arr) {
+        let missedCoordinates = []
+        missedCoordinates.push(arr);
+        return missedCoordinates;
+    }
+
+    isAllShipsSunk() {
+        let shipsSunk = false;
+        let ships = []
+        for (let i = 0; i < 10; i++) {
+			for (let j = 0; j < 10; j++) {
+                if (this.board[i][j] !== 'O') {
+                    ships.push(this.board[i][j]);
+                };
+			}
+        }
+        shipsSunk = ships.every(ship => {
+           return ship.isSunk() == true;
+         })
+        return shipsSunk
     }
 }

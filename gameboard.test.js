@@ -25,12 +25,6 @@ it('ship on board', () => {
     expect(game.board[3][2]).toBe(ship)
 })
 
-it('get missed shots coordinates', () => {
-    const game = new Gameboard();
-    game.createBoard();
-    expect(game.receiveAttack([1, 3])).toEqual([[1, 3]])
-})
-
 it('attack hit the ship', () => {
     const game = new Gameboard();
 	game.createBoard();
@@ -39,4 +33,19 @@ it('attack hit the ship', () => {
     game.receiveAttack([3, 2]);
     game.receiveAttack([3, 3]);
     expect(ship.hitNum).toBe(2);
+})
+
+it('report if all ship sunk', () => {
+    const game = new Gameboard();
+	game.createBoard();
+	const ship = new Ship('Submarine', 3);
+    game.placeShip(ship, [3, 2]);
+    const ship2 = new Ship('Patrol Boat', 2);
+    game.placeShip(ship2, [7, 5])
+	game.receiveAttack([3, 2]);
+    game.receiveAttack([3, 3]);
+    game.receiveAttack([3, 4]);
+    game.receiveAttack([7, 5]);
+    game.receiveAttack([7, 6]);
+    expect(game.isAllShipsSunk()).toBe(true)
 })
