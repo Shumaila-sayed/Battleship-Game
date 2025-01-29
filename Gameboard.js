@@ -1,6 +1,4 @@
-import Ship from "./ship.js";
-
-class Gameboard {
+export default class Gameboard {
 	constructor() {
 		this.board = [];
 	}
@@ -12,20 +10,17 @@ class Gameboard {
 		for (let i = 0; i < rows; i++) {
 			this.board[i] = [];
 			for (let j = 0; j < columns; j++) {
-				this.board[i][j] = null;
+				this.board[i][j] = 'O';
 			}
 		}
 	}
 
     placeShip(ship, start, horizontal = true) {
-        console.log(start)
 		const x = start[0];
 		const y = start[1];
 
 		if (horizontal) {
             for (let i = 0; i < ship.length; i++) {
-                console.log(this.board[x][y])
-                console.log(this.board[x][y + i]);
 				this.board[x][y + i] = ship;
 			}
 		} else {
@@ -33,7 +28,17 @@ class Gameboard {
 				this.board[x + i][y] = ship;
 			}
 		}
-	}
+    }
+    
+    receiveAttack(pos) {
+        const x = pos[0];
+        const y = pos[1];
+        let missedShotCoordinates = [];
+        if (this.board[x][y] !== 'O') {
+            this.board[x][y].hit();
+        } else {
+            missedShotCoordinates.push([x, y]);
+        }
+        return missedShotCoordinates
+    }
 }
-
-export default Gameboard;

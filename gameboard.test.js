@@ -13,7 +13,6 @@ it('Gameboard class exists', () => {
 it('Gameboard is not empty', () => {
     const game = new Gameboard();
     game.createBoard()
-    // console.log(game.board)
     expect(game.board.length).toBe(10);
 })
 
@@ -24,4 +23,20 @@ it('ship on board', () => {
     const ship = new Ship('Submarine', 3);
     game.placeShip(ship, [3, 2]);
     expect(game.board[3][2]).toBe(ship)
+})
+
+it('get missed shots coordinates', () => {
+    const game = new Gameboard();
+    game.createBoard();
+    expect(game.receiveAttack([1, 3])).toEqual([[1, 3]])
+})
+
+it('attack hit the ship', () => {
+    const game = new Gameboard();
+	game.createBoard();
+	const ship = new Ship('Submarine', 3);
+    game.placeShip(ship, [3, 2]);
+    game.receiveAttack([3, 2]);
+    game.receiveAttack([3, 3]);
+    expect(ship.hitNum).toBe(2);
 })
