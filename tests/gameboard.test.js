@@ -5,7 +5,6 @@ let game;
 
 beforeEach(() => {
 	game = new Gameboard();
-	game.createBoard();
 });
 
 it('Gameboard class exists', () => {
