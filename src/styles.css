@@ -1,0 +1,138 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+#root, #__next {
+  isolation: isolate;
+}
+
+body {
+    background-color: rgb(10, 8, 8);
+    color: rgb(232, 236, 240);
+}
+
+h1 {
+    font-family:'Courier New', Courier, monospace;
+    font-size: 3.5em;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 0.4em;
+}
+
+.game-board {
+    display: flex;
+    justify-content: center;
+    gap: 10em;
+    margin-top: 2em;
+}
+
+.player-board {
+    width: 25em;
+    height: 25em;
+   display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(40px, 1fr));
+
+}
+
+.player-board * {
+    border: 1px solid rgb(52, 52, 151);
+}
+
+.player-board *:hover {
+    background-color: beige;
+}
+
+.player-board *.noHit {
+    background-color: rgb(75, 200, 231);
+}
+
+.player-board *.hit {
+    background-color: rgb(173, 27, 27);
+}
+
+.dialog {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+}
+
+.dialog-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 90%;
+  width: 280px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease;
+}
+
+.dialog-content p {
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.dialog-content button {
+  background-color: rgb(30, 30, 105);
+  color: azure;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s;
+}
+
+.dialog-content button:hover {
+  background-color: rgb(173, 51, 51);
+}
+
+/* Keyframes for dialog animation */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: scale(0.9);
+  }
+  to {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
