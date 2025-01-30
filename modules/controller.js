@@ -23,8 +23,8 @@ let computerPlayer = new ComputerPlayer('Computer')
     }
     
     function gameFlow(x, y) {
-        const humanBoard = humanPlayer.gameboard.getBoard();
-        const computerBoard = computerPlayer.gameboard.getBoard();
+        const humanBoard = humanPlayer.gameboard;
+        const computerBoard = computerPlayer.gameboard;
 
         if (humanPlayer.gameboard.receiveAttack(x, y) || computerPlayer.gameboard.receiveAttack(x, y)) {
             const winner = checkWinner(humanBoard, computerBoard);

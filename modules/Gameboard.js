@@ -5,6 +5,13 @@ export default class Gameboard {
 		this.board = [];
 		this.createBoard();
 		this.shipArray = [];
+		this.ships = [
+			new Ship('carrier', 5),
+			new Ship('battleship', 4),
+			new Ship('destroyer', 3),
+			new Ship('submarine', 3),
+			new Ship('patrol boat', 2),
+		];
 	}
 
 	createBoard() {
@@ -17,10 +24,6 @@ export default class Gameboard {
 				this.board[i][j] = '';
 			}
 		}
-	}
-
-	getBoard() {
-		return this.board;
 	}
 
 	placeShip(x, y, ship, isHorizontal) {
@@ -36,15 +39,8 @@ export default class Gameboard {
 	}
 
 	randomPlaceShip() {
-		const ships = [
-			new Ship('carrier', 5),
-			new Ship('battleship', 4),
-			new Ship('destroyer', 3),
-			new Ship('submarine', 3),
-			new Ship('patrol boat', 2),
-		];
 
-		ships.forEach((ship) => {
+		this.ships.forEach((ship) => {
 			let placed = false;
 			while (!placed) {
 				const randomX = Math.floor(Math.random() * 10);
@@ -86,19 +82,18 @@ export default class Gameboard {
 	missedAttacks(arr) {
 		let missedCoordinates = [];
 		missedCoordinates.push(arr);
+		console.log(missedCoordinates);
 		return missedCoordinates;
 	}
 
 	isAllShipsSunk() {
-		let shipsSunk = false;
-		shipsSunk = this.shipArray.every((ship) => {
-			return ship.isSunk() == true;
+		let shipsSunk = this.ships.every((ship) => {
+			return ship.isSunk(); 
 		});
 		return shipsSunk;
 	}
 
 	reset() {
 		this.createBoard();
-		Display.update();
 	}
 }
