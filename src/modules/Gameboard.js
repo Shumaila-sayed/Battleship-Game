@@ -38,6 +38,20 @@ export default class Gameboard {
 		}
 	}
 
+	randomPlaceShip() {
+		const shipLengths = [5, 4, 3, 3, 2]
+
+		shipLengths.forEach((shipLength) => {
+			const randomX = Math.floor(Math.random() * 10)
+			const randomY = Math.floor(Math.random() * 10);
+			try {
+				this.placeShip(randomX, randomY, shipLength, Math.random() < 0.5)
+			} catch {
+				this.randomPlaceShip();
+			}
+		})
+	}
+
 	#checkLegalPos(x, y, ship, isHorizontal) {
 		const incrementX = isHorizontal ? 0 : 1;
 		const incrementY = isHorizontal ? 1 : 0;
@@ -54,13 +68,13 @@ export default class Gameboard {
 		return true;
 	}
 
-	receiveAttack(pos) {
-		const x = pos[0];
-		const y = pos[1];
+	receiveAttack(x, y) {
 		if (this.board[x][y] !== '') {
 			this.board[x][y].hit();
+            return true;
 		} else {
 			this.missedAttacks([x, y]);
+			return false
 		}
 	}
 
