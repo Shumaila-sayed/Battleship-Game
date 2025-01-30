@@ -2,6 +2,7 @@ export default class Gameboard {
     #shipArray = []
 	constructor() {
 		this.board = [];
+		this.createBoard();
 	}
 
 	createBoard() {
@@ -11,9 +12,13 @@ export default class Gameboard {
 		for (let i = 0; i < rows; i++) {
 			this.board[i] = [];
 			for (let j = 0; j < columns; j++) {
-				this.board[i][j] = 'O';
+				this.board[i][j] = '';
 			}
 		}
+	}
+
+	getBoard() {
+		return this.board;
 	}
 
 	placeShip(x, y, ship, isHorizontal) {
@@ -44,7 +49,7 @@ export default class Gameboard {
 			if (newX < 0 || newX >= 10 || newY < 0 || newY >= 10)
 				return false;
 
-			if (this.board[newX][newY] !== 'O') return false;
+			if (this.board[newX][newY] !== '') return false;
 		}
 		return true;
 	}
@@ -52,7 +57,7 @@ export default class Gameboard {
 	receiveAttack(pos) {
 		const x = pos[0];
 		const y = pos[1];
-		if (this.board[x][y] !== 'O') {
+		if (this.board[x][y] !== '') {
 			this.board[x][y].hit();
 		} else {
 			this.missedAttacks([x, y]);
@@ -71,5 +76,10 @@ export default class Gameboard {
 			return ship.isSunk() == true;
 		});
 		return shipsSunk;
+	}
+
+	reset() {
+		this.createBoard();
+		Display.update();
 	}
 }
