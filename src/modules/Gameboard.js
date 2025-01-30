@@ -12,6 +12,8 @@ export default class Gameboard {
 			new Ship('submarine', 3),
 			new Ship('patrol boat', 2),
 		];
+		this.missedCoordinates = [];
+		this.hitShipCoordinates = []
 	}
 
 	createBoard() {
@@ -72,18 +74,10 @@ export default class Gameboard {
 	receiveAttack(x, y) {
 		if (this.board[x][y] !== '') {
 			this.board[x][y].hit();
-			return true;
+			this.hitShipCoordinates.push([x, y])
 		} else {
-			this.missedAttacks([x, y]);
-			return false;
+			this.missedCoordinates.push([x, y]);
 		}
-	}
-
-	missedAttacks(arr) {
-		let missedCoordinates = [];
-		missedCoordinates.push(arr);
-		console.log(missedCoordinates);
-		return missedCoordinates;
 	}
 
 	isAllShipsSunk() {

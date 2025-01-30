@@ -1,4 +1,5 @@
 import { Player, ComputerPlayer } from "./player.js";
+import { Display } from "./DOM.js";
 
 export const Game = (() => {
     
@@ -25,8 +26,8 @@ let computerPlayer = new ComputerPlayer('Computer')
     function gameFlow(x, y) {
         const humanBoard = humanPlayer.gameboard;
         const computerBoard = computerPlayer.gameboard;
-
         if (humanPlayer.gameboard.receiveAttack(x, y) || computerPlayer.gameboard.receiveAttack(x, y)) {
+
             const winner = checkWinner(humanBoard, computerBoard);
             if (winner) {
                 Display.showDialog(`${winner} wins!`);
