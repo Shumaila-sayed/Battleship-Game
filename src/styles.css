@@ -72,12 +72,16 @@ h1 {
     background-color: beige;
 }
 
-.player-board *.noHit {
+.player-board .noHit {
     background-color: rgb(75, 200, 231);
 }
 
-.player-board *.hit {
+.player-board .hit {
     background-color: rgb(173, 27, 27);
+}
+
+.player-board .ship {
+    background-color: rgb(190, 96, 62);
 }
 
 .dialog {
