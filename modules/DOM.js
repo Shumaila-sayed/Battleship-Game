@@ -6,29 +6,54 @@ export const Display = (() => {
     const dialog = document.getElementById('dialog');
     const dialogMessage = document.getElementById('dialog-message');
     const closeButton = document.getElementById('close-dialog'); 
-    
-    // function update() {
-        
-    // }
 
 
+    function displayMissedHits() {
+        const missedCoordinates = Game.computerPlayer.gameboard.missedCoordinates;
 
-    
+        missedCoordinates.forEach((coordinate) => {
+            const x = coordinate[0];
+            const y = coordinate[1];
+            const cells = document.querySelectorAll('.computer-cell');
+
+            cells.forEach((cell) => {
+                  if (parseInt(cell.dataset.indexX) === x && parseInt(cell.dataset.indexY) === y) {
+						cell.classList.add('noHit');
+					}
+            })
+        })
+    }
+
+    function displaySuccessfulHits() {
+        const hitCoordinates = Game.computerPlayer.gameboard.hitShipCoordinates;
+
+        hitCoordinates.forEach((coordinate) => {
+            const x = coordinate[0];
+            const y = coordinate[1];
+            const cells = document.querySelectorAll('.computer-cell');
+
+            cells.forEach((cell) => {
+                 if (parseInt(cell.dataset.indexX) === x &&	parseInt(cell.dataset.indexY) === y) {
+						cell.classList.add('hit');
+					}
+            })
+        })
+    }
 
     function showDialog(message) {
 		dialogMessage.textContent = message;
 		dialog.style.display = 'flex'; // Make the dialog visible
 	}
 
-		function hideDialog() {
-			dialog.style.display = 'none'; // Hide the dialog
-		}
-
-      function resetAll() {
-          Game.humanPlayer.gameboard.reset();
-          Game.computerPlayer.gameboard.reset()
-			hideDialog();
-		}
+	function hideDialog() {
+		dialog.style.display = 'none'; // Hide the dialog
+    }
+    
+    function resetAll() {
+        Game.humanPlayer.gameboard.reset();
+        Game.computerPlayer.gameboard.reset()
+		hideDialog();
+	}
 
     function showShips() {
         const shipPoints = Game.humanPlayer.gameboard.shipArray;
@@ -47,19 +72,13 @@ export const Display = (() => {
     }
 
     function setupEventListeners() {
-        playerBoard.addEventListener('click', (event) => {
-            if (event.target.classList.contains('player-cell')) {
-                const x = parseInt(event.target.dataset.indexX);
-                const y = parseInt(event.target.dataset.indexY)
-                Game.gameFlow(x, y)
-            }
-        })
-
         computerBoard.addEventListener('click', (event) => {
 			if (event.target.classList.contains('computer-cell')) {
 				const x = parseInt(event.target.dataset.indexX);
 				const y = parseInt(event.target.dataset.indexY);
-				Game.gameFlow(x, y);
+                Game.gameFlow(x, y);
+                displayMissedHits();
+                displaySuccessfulHits();
 				}
 		});
         
@@ -92,6 +111,6 @@ export const Display = (() => {
         showShips();       
     }
 
-    return { init }
+    return { init, displayMissedHits }
 
 })();
