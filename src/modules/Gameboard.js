@@ -1,4 +1,4 @@
-import Ship from './ship.js'
+import Ship from './ship.js';
 
 export default class Gameboard {
 	constructor() {
@@ -13,7 +13,7 @@ export default class Gameboard {
 			new Ship('patrol boat', 2),
 		];
 		this.missedCoordinates = [];
-		this.hitShipCoordinates = []
+		this.hitShipCoordinates = [];
 	}
 
 	createBoard() {
@@ -41,7 +41,6 @@ export default class Gameboard {
 	}
 
 	randomPlaceShip() {
-
 		this.ships.forEach((ship) => {
 			let placed = false;
 			while (!placed) {
@@ -74,7 +73,7 @@ export default class Gameboard {
 	receiveAttack(x, y) {
 		if (this.board[x][y] !== '') {
 			this.board[x][y].hit();
-			this.hitShipCoordinates.push([x, y])
+			this.hitShipCoordinates.push([x, y]);
 		} else {
 			this.missedCoordinates.push([x, y]);
 		}
@@ -82,7 +81,7 @@ export default class Gameboard {
 
 	isAllShipsSunk() {
 		let shipsSunk = this.ships.every((ship) => {
-			return ship.isSunk(); 
+			return ship.isSunk();
 		});
 		return shipsSunk;
 	}
