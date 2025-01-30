@@ -1,9 +1,9 @@
-import { Player, ComputerPlayer } from "./player";
+import { Player, ComputerPlayer } from "./player.js";
 
+export const Game = (() => {
+    
 let humanPlayer = new Player('You');
 let computerPlayer = new ComputerPlayer('Computer')
-
-const Game = (() => {
 
     function computerAttack() {
         const randomX = Math.floor(Math.random() * 10);
@@ -43,6 +43,6 @@ const Game = (() => {
         computerPlayer.gameboard.reset();
     }
 
-    return { gameFlow, resetGame, computerAttack }
+    return { gameFlow, resetGame, computerAttack, humanPlayer, computerPlayer }
 
 })();

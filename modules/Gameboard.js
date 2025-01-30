@@ -1,8 +1,10 @@
+import Ship from './ship.js'
+
 export default class Gameboard {
-    #shipArray = []
 	constructor() {
 		this.board = [];
 		this.createBoard();
+		this.shipArray = [];
 	}
 
 	createBoard() {
@@ -22,34 +24,39 @@ export default class Gameboard {
 	}
 
 	placeShip(x, y, ship, isHorizontal) {
-		if (!this.#checkLegalPos(x, y, ship, isHorizontal))
-			throw new Error('invalid coordinates');
-
-		this.#shipArray.push(ship);
-
 		const incrementX = isHorizontal ? 0 : 1;
 		const incrementY = isHorizontal ? 1 : 0;
 
 		for (let i = 0; i < ship.length; i++) {
 			const newX = x + i * incrementX;
 			const newY = y + i * incrementY;
-
+			this.shipArray.push([newX, newY]);
 			this.board[newX][newY] = ship;
 		}
 	}
 
 	randomPlaceShip() {
-		const shipLengths = [5, 4, 3, 3, 2]
+		const ships = [
+			new Ship('carrier', 5),
+			new Ship('battleship', 4),
+			new Ship('destroyer', 3),
+			new Ship('submarine', 3),
+			new Ship('patrol boat', 2),
+		];
 
-		shipLengths.forEach((shipLength) => {
-			const randomX = Math.floor(Math.random() * 10)
-			const randomY = Math.floor(Math.random() * 10);
-			try {
-				this.placeShip(randomX, randomY, shipLength, Math.random() < 0.5)
-			} catch {
-				this.randomPlaceShip();
+		ships.forEach((ship) => {
+			let placed = false;
+			while (!placed) {
+				const randomX = Math.floor(Math.random() * 10);
+				const randomY = Math.floor(Math.random() * 10);
+				const isHorizontal = Math.random() < 0.5;
+
+				if (this.#checkLegalPos(randomX, randomY, ship, isHorizontal)) {
+					this.placeShip(randomX, randomY, ship, isHorizontal);
+					placed = true;
+				}
 			}
-		})
+		});
 	}
 
 	#checkLegalPos(x, y, ship, isHorizontal) {
@@ -60,9 +67,7 @@ export default class Gameboard {
 			const newX = x + i * incrementX;
 			const newY = y + i * incrementY;
 
-			if (newX < 0 || newX >= 10 || newY < 0 || newY >= 10)
-				return false;
-
+			if (newX < 0 || newX >= 10 || newY < 0 || newY >= 10) return false;
 			if (this.board[newX][newY] !== '') return false;
 		}
 		return true;
@@ -71,10 +76,10 @@ export default class Gameboard {
 	receiveAttack(x, y) {
 		if (this.board[x][y] !== '') {
 			this.board[x][y].hit();
-            return true;
+			return true;
 		} else {
 			this.missedAttacks([x, y]);
-			return false
+			return false;
 		}
 	}
 
@@ -86,7 +91,7 @@ export default class Gameboard {
 
 	isAllShipsSunk() {
 		let shipsSunk = false;
-		shipsSunk = this.#shipArray.every((ship) => {
+		shipsSunk = this.shipArray.every((ship) => {
 			return ship.isSunk() == true;
 		});
 		return shipsSunk;
