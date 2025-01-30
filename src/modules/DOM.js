@@ -5,11 +5,30 @@ export const Display = (() => {
     const computerBoard = document.querySelector('#computer');
     const dialog = document.getElementById('dialog');
     const dialogMessage = document.getElementById('dialog-message');
-    const heading = document.querySelector('h1')
+    const closeButton = document.getElementById('close-dialog'); 
     
     // function update() {
         
     // }
+
+
+
+    
+
+    function showDialog(message) {
+		dialogMessage.textContent = message;
+		dialog.style.display = 'flex'; // Make the dialog visible
+	}
+
+		function hideDialog() {
+			dialog.style.display = 'none'; // Hide the dialog
+		}
+
+      function resetAll() {
+          Game.humanPlayer.gameboard.reset();
+          Game.computerPlayer.gameboard.reset()
+			hideDialog();
+		}
 
     function showShips() {
         const shipPoints = Game.humanPlayer.gameboard.shipArray;
@@ -27,9 +46,27 @@ export const Display = (() => {
         })
     }
 
+    function setupEventListeners() {
+        playerBoard.addEventListener('click', (event) => {
+            if (event.target.classList.contains('player-cell')) {
+                const x = parseInt(event.target.dataset.indexX);
+                const y = parseInt(event.target.dataset.indexY)
+                Game.gameFlow(x, y)
+            }
+        })
+
+        computerBoard.addEventListener('click', (event) => {
+			if (event.target.classList.contains('computer-cell')) {
+				const x = parseInt(event.target.dataset.indexX);
+				const y = parseInt(event.target.dataset.indexY);
+				Game.gameFlow(x, y);
+				}
+		});
+        
+        closeButton.addEventListener('click', resetAll);
+    }
 
     function init() {
-        //  setupEventListeners(); 
         for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
                 const cell = document.createElement('div');
@@ -51,9 +88,8 @@ export const Display = (() => {
 
         Game.computerPlayer.gameboard.randomPlaceShip();
         Game.humanPlayer.gameboard.randomPlaceShip()
-        
-        showShips()
-       
+        setupEventListeners(); 
+        showShips();       
     }
 
     return { init }
