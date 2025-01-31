@@ -5,38 +5,68 @@ export const Game = (() => {
 	let humanPlayer = new Player('You');
 	let computerPlayer = new ComputerPlayer('Computer');
 
-	function checkWinner(humanBoard, computerBoard) {
-		if (humanBoard.isAllShipsSunk()) {
+	function computerTurn() {
+		if (!humanPlayer.isTurn) {
+			const [x, y] = computerPlayer.makeRandomMove();  
+		   computerGameFLow(x, y)
+		}
+	}
+
+	function checkWinner(humanShips, computerShips) {
+		const humanShipStatus = humanShips.every((ship) => {
+			return ship.isSunk()
+		})
+		
+		const computerShipStatus = computerShips.every((ship) => {
+			return ship.isSunk()
+		})
+
+		if (humanShipStatus) {
 			return computerPlayer.name;
-		} else if (computerBoard.isAllShipsSunk()) {
+		} else if (computerShipStatus) {
 			return humanPlayer.name;
 		} else {
 			return null;
 		}
+
 	}
 
-	function gameFlow(x, y) {
-		const humanBoard = humanPlayer.gameboard;
-		const computerBoard = computerPlayer.gameboard;
-		if (
-			humanPlayer.gameboard.receiveAttack(x, y) ||
-			computerPlayer.gameboard.receiveAttack(x, y)
-		) {
-			const winner = checkWinner(humanBoard, computerBoard);
+	function humanGameFlow(x, y) {
+		const humanShips = humanPlayer.gameboard.ships;
+		const computerShips = computerPlayer.gameboard.ships;
+		if (computerPlayer.gameboard.receiveAttack(x, y)) {
+			Display.displayMissedHits();
+			Display.displaySuccessfulHits();
+			const winner = checkWinner(humanShips, computerShips);
 			if (winner) {
-				Display.showDialog(`${winner} wins!`);
+				Display.showDialog(`${winner} won!`);
 			} else {
-				if (humanPlayer.isTurn === false) {
+				humanPlayer.toggleTurn();
+				computerTurn();
+			}
+		}
+	}
+	
+	function computerGameFLow(x, y) {
+		const humanShips = humanPlayer.gameboard.ships;
+		const computerShips = computerPlayer.gameboard.ships;
+			if (humanPlayer.gameboard.receiveAttack(x, y)) {
+				Display.computerMissedHits();
+				Display.computerSuccessfulHits();
+				const winner = checkWinner(humanShips, computerShips);
+				if (winner) {
+					Display.showDialog(`${winner} won!`);
+				} else {
 					humanPlayer.toggleTurn();
 				}
 			}
 		}
-	}
+	
 
 	function resetGame() {
 		humanPlayer.gameboard.reset();
 		computerPlayer.gameboard.reset();
 	}
 
-	return { gameFlow, resetGame, humanPlayer, computerPlayer };
+	return { humanGameFlow, computerGameFLow , resetGame, humanPlayer, computerPlayer, computerTurn };
 })();

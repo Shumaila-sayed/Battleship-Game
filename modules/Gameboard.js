@@ -74,9 +74,12 @@ export default class Gameboard {
 		if (this.board[x][y] !== '') {
 			this.board[x][y].hit();
 			this.hitShipCoordinates.push([x, y]);
+			return true;
 		} else {
 			this.missedCoordinates.push([x, y]);
+			return true
 		}
+
 	}
 
 	isAllShipsSunk() {
