@@ -28,7 +28,6 @@ export const Game = (() => {
 		} else {
 			return null;
 		}
-
 	}
 
 	function humanGameFlow(x, y) {
@@ -61,7 +60,6 @@ export const Game = (() => {
 				}
 			}
 		}
-	
 
 	function resetGame() {
 		humanPlayer.gameboard.reset();
