@@ -65,9 +65,8 @@ export const Display = (() => {
 	}
 
 	function resetAll() {
-		Game.resetGame();
+		location.reload();
 		hideDialog();
-		
 	}
 
 	function showShips() {
@@ -97,7 +96,6 @@ export const Display = (() => {
 				Game.humanGameFlow(x, y);
 			}
 		});
-
 		closeButton.addEventListener('click', resetAll);
 	}
 

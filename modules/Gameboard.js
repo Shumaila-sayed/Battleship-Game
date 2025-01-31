@@ -79,7 +79,6 @@ export default class Gameboard {
 			this.missedCoordinates.push([x, y]);
 			return true
 		}
-
 	}
 
 	isAllShipsSunk() {
@@ -87,9 +86,5 @@ export default class Gameboard {
 			return ship.isSunk();
 		});
 		return shipsSunk;
-	}
-
-	reset() {
-		this.board = []
 	}
 }
