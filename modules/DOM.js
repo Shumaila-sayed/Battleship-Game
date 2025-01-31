@@ -67,6 +67,7 @@ export const Display = (() => {
 	function resetAll() {
 		Game.resetGame();
 		hideDialog();
+		
 	}
 
 	function showShips() {

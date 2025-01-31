@@ -28,7 +28,6 @@ export const Game = (() => {
 		} else {
 			return null;
 		}
-
 	}
 
 	function humanGameFlow(x, y) {
