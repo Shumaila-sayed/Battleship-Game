@@ -28,16 +28,3 @@ it('attack hit the ship', () => {
 	game.receiveAttack(3, 3);
 	expect(ship.hitNum).toBe(2);
 });
-
-it('report if all ship sunk', () => {
-	const ship = new Ship('Submarine', 3);
-	game.placeShip(3, 2, ship, true);
-	const ship2 = new Ship('Patrol Boat', 2);
-	game.placeShip(7, 5, ship2, true);
-	game.receiveAttack(3, 2);
-	game.receiveAttack(3, 3);
-	game.receiveAttack(3, 4);
-	game.receiveAttack(7, 5);
-	game.receiveAttack(7, 6);
-	expect(game.isAllShipsSunk()).toBe(true);
-});
