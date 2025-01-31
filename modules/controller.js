@@ -61,5 +61,5 @@ export const Game = (() => {
 			}
 		}
 
-	return { humanGameFlow, computerGameFlow , resetGame, humanPlayer, computerPlayer, computerTurn };
+	return { humanGameFlow, computerGameFlow , humanPlayer, computerPlayer, computerTurn };
 })();
