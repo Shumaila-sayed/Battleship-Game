@@ -7,6 +7,46 @@ export const Display = (() => {
 	const dialogMessage = document.getElementById('dialog-message');
 	const closeButton = document.getElementById('close-dialog');
 
+	function computerMissedHits() {
+		const missedCoordinates = Game.humanPlayer.gameboard.missedCoordinates;
+		missedCoordinates.forEach((coordinate) => {
+			const x = coordinate[0];
+			const y = coordinate[1];
+			const cells = document.querySelectorAll('.player-cell');
+
+			cells.forEach((cell) => {
+				if (
+					parseInt(cell.dataset.indexX) === x &&
+					parseInt(cell.dataset.indexY) === y
+				) {
+					cell.classList.add('noHit');
+				}
+			});
+		});
+	}
+
+	function computerSuccessfulHits() {
+		const hitCoordinates = Game.humanPlayer.gameboard.hitShipCoordinates;
+
+		hitCoordinates.forEach((coordinate) => {
+			const x = coordinate[0];
+			const y = coordinate[1];
+			const cells = document.querySelectorAll('.player-cell');
+
+			cells.forEach((cell) => {
+				if (
+					parseInt(cell.dataset.indexX) === x &&
+					parseInt(cell.dataset.indexY) === y
+				) {
+					cell.classList.remove('ship')
+					 cell.classList.add('hit')
+					// cell.classList.add('hit');
+				}
+			});
+		});
+		
+	}
+
 	function displayMissedHits() {
 		const missedCoordinates = Game.computerPlayer.gameboard.missedCoordinates;
 
@@ -44,11 +84,11 @@ export const Display = (() => {
 
 	function showDialog(message) {
 		dialogMessage.textContent = message;
-		dialog.style.display = 'flex'; // Make the dialog visible
+		dialog.style.display = 'flex';
 	}
 
 	function hideDialog() {
-		dialog.style.display = 'none'; // Hide the dialog
+		dialog.style.display = 'none';
 	}
 
 	function resetAll() {
@@ -81,9 +121,7 @@ export const Display = (() => {
 			if (event.target.classList.contains('computer-cell')) {
 				const x = parseInt(event.target.dataset.indexX);
 				const y = parseInt(event.target.dataset.indexY);
-				Game.gameFlow(x, y);
-				displayMissedHits();
-				displaySuccessfulHits();
+				Game.humanGameFlow(x, y);
 			}
 		});
 
@@ -116,5 +154,5 @@ export const Display = (() => {
 		showShips();
 	}
 
-	return { init, displayMissedHits };
+	return { showDialog, init, displayMissedHits, displaySuccessfulHits, computerMissedHits, computerSuccessfulHits};
 })();
