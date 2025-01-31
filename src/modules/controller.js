@@ -61,10 +61,5 @@ export const Game = (() => {
 			}
 		}
 
-	function resetGame() {
-		humanPlayer.gameboard.reset();
-		computerPlayer.gameboard.reset();
-	}
-
 	return { humanGameFlow, computerGameFlow , resetGame, humanPlayer, computerPlayer, computerTurn };
 })();
