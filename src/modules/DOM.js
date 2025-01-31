@@ -7,79 +7,52 @@ export const Display = (() => {
 	const dialogMessage = document.getElementById('dialog-message');
 	const closeButton = document.getElementById('close-dialog');
 
-	function computerMissedHits() {
-		const missedCoordinates = Game.humanPlayer.gameboard.missedCoordinates;
-		missedCoordinates.forEach((coordinate) => {
-			const x = coordinate[0];
-			const y = coordinate[1];
-			const cells = document.querySelectorAll('.player-cell');
-
+	function updateBoard(boardClass, coordinates, hitClass, removeShip = false) {
+		const cells = document.querySelectorAll(`.${boardClass}`);
+		coordinates.forEach(([x, y]) => {
 			cells.forEach((cell) => {
 				if (
 					parseInt(cell.dataset.indexX) === x &&
 					parseInt(cell.dataset.indexY) === y
 				) {
-					cell.classList.add('noHit');
+					if (removeShip) cell.classList.remove('ship');
+					cell.classList.add(hitClass);
 				}
 			});
 		});
+	}
+
+	function computerMissedHits() {
+		updateBoard(
+			'player-cell',
+			Game.humanPlayer.gameboard.missedCoordinates,
+			'noHit'
+		);
 	}
 
 	function computerSuccessfulHits() {
-		const hitCoordinates = Game.humanPlayer.gameboard.hitShipCoordinates;
-
-		hitCoordinates.forEach((coordinate) => {
-			const x = coordinate[0];
-			const y = coordinate[1];
-			const cells = document.querySelectorAll('.player-cell');
-
-			cells.forEach((cell) => {
-				if (
-					parseInt(cell.dataset.indexX) === x &&
-					parseInt(cell.dataset.indexY) === y
-				) {
-					cell.classList.remove('ship')
-					 cell.classList.add('hit')
-					// cell.classList.add('hit');
-				}
-			});
-		});
-		
+		updateBoard(
+			'player-cell',
+			Game.humanPlayer.gameboard.hitShipCoordinates,
+			'hit',
+			true
+		);
 	}
 
 	function displayMissedHits() {
-		const missedCoordinates = Game.computerPlayer.gameboard.missedCoordinates;
-
-		missedCoordinates.forEach((coordinate) => {
-			const x = coordinate[0];
-			const y = coordinate[1];
-			const cells = document.querySelectorAll('.computer-cell');
-
-			cells.forEach((cell) => {
-				if (parseInt(cell.dataset.indexX) === x && parseInt(cell.dataset.indexY) === y) {
-					cell.classList.add('noHit');
-				}
-			});
-		});
+		updateBoard(
+			'computer-cell',
+			Game.computerPlayer.gameboard.missedCoordinates,
+			'noHit'
+		);
 	}
 
 	function displaySuccessfulHits() {
-		const hitCoordinates = Game.computerPlayer.gameboard.hitShipCoordinates;
-
-		hitCoordinates.forEach((coordinate) => {
-			const x = coordinate[0];
-			const y = coordinate[1];
-			const cells = document.querySelectorAll('.computer-cell');
-
-			cells.forEach((cell) => {
-				if (
-					parseInt(cell.dataset.indexX) === x &&
-					parseInt(cell.dataset.indexY) === y
-				) {
-					cell.classList.add('hit');
-				}
-			});
-		});
+		updateBoard(
+			'computer-cell',
+			Game.computerPlayer.gameboard.hitShipCoordinates,
+			'hit'
+		);
 	}
 
 	function showDialog(message) {
@@ -92,8 +65,7 @@ export const Display = (() => {
 	}
 
 	function resetAll() {
-		Game.humanPlayer.gameboard.reset();
-		Game.computerPlayer.gameboard.reset();
+		Game.resetGame();
 		hideDialog();
 	}
 
@@ -128,25 +100,21 @@ export const Display = (() => {
 		closeButton.addEventListener('click', resetAll);
 	}
 
+	function createBoard(boardElement, cellClass) {
+		for (let i = 0; i < 10; i++) {
+			for (let j = 0; j < 10; j++) {
+				const cell = document.createElement('div');
+				cell.className = cellClass;
+				cell.dataset.indexX = i;
+				cell.dataset.indexY = j;
+				boardElement.appendChild(cell);
+			}
+		}
+	}
+
 	function init() {
-		for (let i = 0; i < 10; i++) {
-			for (let j = 0; j < 10; j++) {
-				const cell = document.createElement('div');
-				cell.className = 'player-cell';
-				cell.dataset.indexX = i;
-				cell.dataset.indexY = j;
-				playerBoard.appendChild(cell);
-			}
-		}
-		for (let i = 0; i < 10; i++) {
-			for (let j = 0; j < 10; j++) {
-				const cell = document.createElement('div');
-				cell.className = 'computer-cell';
-				cell.dataset.indexX = i;
-				cell.dataset.indexY = j;
-				computerBoard.appendChild(cell);
-			}
-		}
+		createBoard(playerBoard, 'player-cell');
+		createBoard(computerBoard, 'computer-cell');
 
 		Game.computerPlayer.gameboard.randomPlaceShip();
 		Game.humanPlayer.gameboard.randomPlaceShip();

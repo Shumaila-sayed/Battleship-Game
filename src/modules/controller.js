@@ -8,7 +8,7 @@ export const Game = (() => {
 	function computerTurn() {
 		if (!humanPlayer.isTurn) {
 			const [x, y] = computerPlayer.makeRandomMove();  
-		   computerGameFLow(x, y)
+		   computerGameFlow(x, y)
 		}
 	}
 
@@ -28,6 +28,7 @@ export const Game = (() => {
 		} else {
 			return null;
 		}
+
 	}
 
 	function humanGameFlow(x, y) {
@@ -46,7 +47,7 @@ export const Game = (() => {
 		}
 	}
 	
-	function computerGameFLow(x, y) {
+	function computerGameFlow(x, y) {
 		const humanShips = humanPlayer.gameboard.ships;
 		const computerShips = computerPlayer.gameboard.ships;
 			if (humanPlayer.gameboard.receiveAttack(x, y)) {
@@ -66,5 +67,5 @@ export const Game = (() => {
 		computerPlayer.gameboard.reset();
 	}
 
-	return { humanGameFlow, computerGameFLow , resetGame, humanPlayer, computerPlayer, computerTurn };
+	return { humanGameFlow, computerGameFlow , resetGame, humanPlayer, computerPlayer, computerTurn };
 })();
