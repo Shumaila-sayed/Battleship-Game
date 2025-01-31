@@ -90,6 +90,6 @@ export default class Gameboard {
 	}
 
 	reset() {
-		this.createBoard();
+		this.board = []
 	}
 }
