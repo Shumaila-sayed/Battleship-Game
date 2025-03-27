@@ -1,6 +1,6 @@
 # 🚢 Battleship Game - JavaScript & TDD 🎯
 
-A fully functional version of the classic **Battleship** game built using **JavaScript** and **Test-Driven Development (TDD)** principles. Players take turns attacking the enemy board, with AI functionality for computer moves. The project focuses on modular code design, object-oriented programming (OOP), and unit testing to create a bug-free, maintainable game.
+A fully functional version of the classic **Battleship** game built using **JavaScript** and **Test-Driven Development (TDD)** principles. Players take turns attacking the enemy board, with AI functionality for computer moves. The project focuses on modular code design, object-oriented programming, and unit testing to create a bug-free, maintainable game.
 
 ---
 
